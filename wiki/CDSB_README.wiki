@@ -12,62 +12,36 @@ FreeBSD:
 
     Installing Ports
 
-        accessibility/linux-atk
-
-        graphics/linux-cairo
-
+        accessibility/linux-atk\n
+        graphics/linux-cairo\n
         textproc/linux-expat
-
         x11-fonts/linux-fontconfig
-
         devel/linux-glib2
-
         x11-toolkits/linux-gtk
-
         x11-toolkits/linux-gtk2
-
         graphics/linux-jpeg
-
         x11-toolkits/linux-pango
-
         graphics/linux-png
-
         sysutils/linux-procps
-
         graphics/linux-tiff
-
         x11/linux-xorg-libs
-
         emulators/linux_base-fc4
-
         archivers/rpm
 
     Installing RPMs
 
         audit-libs-0.8.2-1.i386.rpm
-
         cracklib-2.8.2-1.i386.rpm
-
         cracklib-dicts-2.8.2-1.i386.rpm
-
         gawk-3.1.4-5.i386.rpm
-
         gzip-1.3.5-6.i386.rpm
-
         less-382-7.i386.rpm
-
         mktemp-1.5-23.i386.rpm
-
         pam-0.79-8.i386.rpm
-
         pdksh-5.2.14-30.i386.rpm
-
         sed-4.1.4-1.i386.rpm
-
         tar-1.14-4.i386.rpm
-
         tcsh-6.14-1.i386.rpm
-
         util-linux-2.12p-9.3.i386.rpm
 
         Caution: The installed RPMs will be overwritten!
@@ -79,13 +53,11 @@ FreeBSD:
     Creating Files
 
         /compat/linux/etc/rcCDS.d/README
-
         /usr/local/etc/rc.d/cdsrc
 
     Creating Links
 
         /compat/linux/bin/df -> /bin/df
-
         /compat/linux/usr/lib/librt.so.1 -> ../../lib/librt-2.3.6.so
 
     Adding Entries
@@ -97,17 +69,11 @@ FreeBSD:
         /etc/shells:
 
             /compat/linux/bin/bash
-
             /compat/linux/bin/csh
-
             /compat/linux/bin/sh
-
             /compat/linux/bin/tcsh
-
             /compat/linux/usr/bin/ksh
-
             /copmat/linux/bin/ksh
-
             /copmat/linux/usr/bin/pdksh
 
     Mounting File Systems
@@ -173,7 +139,6 @@ FreeBSD:
     ~/.tcshrc:
 
         set path=( $path \
-
                          /../../../sbin \
                          /../../../bin \
                          /../../../usr/sbin \
