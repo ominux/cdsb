@@ -1,6 +1,25 @@
 CDSB README
+{{{
+CDSB - Prepare for Installation of Cadence products on FreeBSD.
+Copyright (C) 2008 Zhang Liang
 
-=Introduction=
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Email: meitolake@gmail.com
+
+Introduction
+------------
 
 This is CDSB version 1.0.
 
@@ -12,12 +31,12 @@ FreeBSD:
 
     Installing Ports
 
-        accessibility/linux-atk\n
-        graphics/linux-cairo\n
+        accessibility/linux-atk
+        graphics/linux-cairo
         textproc/linux-expat
         x11-fonts/linux-fontconfig
         devel/linux-glib2
-        x11-toolkits/linux-gtk
+	x11-toolkits/linux-gtk
         x11-toolkits/linux-gtk2
         graphics/linux-jpeg
         x11-toolkits/linux-pango
@@ -52,13 +71,13 @@ FreeBSD:
 
     Creating Files
 
-        /compat/linux/etc/rcCDS.d/README
+	/compat/linux/etc/rcCDS.d/README
         /usr/local/etc/rc.d/cdsrc
 
     Creating Links
 
         /compat/linux/bin/df -> /bin/df
-        /compat/linux/usr/lib/librt.so.1 -> ../../lib/librt-2.3.6.so
+	/compat/linux/usr/lib/librt.so.1 -> ../../lib/librt-2.3.6.so
 
     Adding Entries
 
@@ -84,7 +103,8 @@ FreeBSD:
 
         /etc/rc.d/abi
 
-=Requirements=
+Requirements
+------------
 
 1. Operating System
 
@@ -98,7 +118,8 @@ FreeBSD:
 
     The Ports tree must be installed or updated.
 
-=Usage=
+Usage
+-----
 
 1. Login as root.
 
@@ -110,7 +131,8 @@ FreeBSD:
 
     ./cdsb_1.0/bin/cdsb
 
-=Recommendation=
+Recommendation
+--------------
 
 1. Installing The Java Runtime Environment
 
@@ -122,8 +144,8 @@ FreeBSD:
     Java Runtime Environment in the iscape/runtime directory, named LNX86. To
     create a link, Type:
 
-        mv LNX86 LNX86_bak
-        ln -s path_to_jre LNX86
+	mv LNX86 LNX86_bak
+	ln -s path_to_jre LNX86
 
     The path_to_jre directory is the Java Runtime Environment installation
     directory.
@@ -138,16 +160,16 @@ FreeBSD:
     order to locate the root directory correctly, add following to ~/.cshrc or
     ~/.tcshrc:
 
-        set path=( $path \
-                         /../../../sbin \
-                         /../../../bin \
-                         /../../../usr/sbin \
-                         /../../../usr/bin \
-                         /../../../usr/games \
-                         /../../../usr/local/sbin \
-                         /../../../usr/local/bin \
-                         /../../../usr/X11R6/bin \
-                      )
+	set path=( $path \
+		   /../../../sbin \
+		   /../../../bin \
+		   /../../../usr/sbin \
+		   /../../../usr/bin \
+		   /../../../usr/games \
+		   /../../../usr/local/sbin \
+		   /../../../usr/local/bin \
+		   /../../../usr/X11R6/bin \
+		 )
 
 3. Using rc of Cadence products
 
@@ -155,3 +177,4 @@ FreeBSD:
     the license daemons. CDSB creates the /compat/linux/etc/rcCDS.d directory,
     put rc scripts in this directory. See the /compat/linux/etc/rcCDS.d/README
     file for details.
+}}}
