@@ -13,7 +13,9 @@ FreeBSD:
     Installing Ports
 
         accessibility/linux-atk
+
         graphics/linux-cairo
+
         textproc/linux-expat
         x11-fonts/linux-fontconfig
         devel/linux-glib2
