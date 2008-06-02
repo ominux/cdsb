@@ -31,8 +31,6 @@ Email: meitolake@gmail.com
 
             `portsnap fetch update`
 
-    See FreeBSD documentation for details.
-
 = Running CDSB =
 
     See CDSB README for details.
