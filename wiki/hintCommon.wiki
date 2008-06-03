@@ -17,6 +17,8 @@ along with this program.  If not, see <[http://www.gnu.org/licenses/]>.
 
 Email: meitolake@gmail.com
 
+#summary Common Hint
+
 = Installing Ports Tree =
 
 Install or update the Ports tree.
