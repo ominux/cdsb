@@ -21,7 +21,7 @@ Email: meitolake@gmail.com
 
 Install or update the Ports tree.
 
-For example, use the `portsnap` command:
+For example, use the `portsnap` command.
 
 Install the Ports tree:
 
