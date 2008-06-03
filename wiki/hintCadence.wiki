@@ -45,7 +45,7 @@ If the use of installscape encounter any accidents, try using the batch mode.
 
 = Using RC Script =
 
-See [http://code.google.com/p/cdsb/wiki/hintCommon Using RC Script].
+See [http://code.google.com/p/cdsb/wiki/hintCommon Common Hint].
 
 Netscape is a registered trademark of America Online, Inc. in the United States and/or other countries.
 
