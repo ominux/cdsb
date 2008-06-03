@@ -29,17 +29,17 @@ For example, use the `adduser` command to create an account, the user name is `c
 
 Install the Netscape® web browser 4.x for Linux or later. Such as 7.x.
 
-= Using Cadence® InstallScape^TM^ =
+= Using Cadence® !InstallScape^TM^ =
 
 See Installing Java Runtime Environment^TM^.
 
-InstallScape^TM^ contains the Java Runtime Environment in the `iscape/runtime` directory, named `LNX86`. To create a link, Type:
+!InstallScape^TM^ contains the Java Runtime Environment in the `iscape/runtime` directory, named `LNX86`. To create a link, Type:
 
  `mv LNX86 LNX86_sorry`
 
- `ln -s` _`path_to_jre`_ `LNX86`
+ `ln -s` _path_to_jre_ `LNX86`
 
-The _`path_to_jre`_ directory is the Java Runtime Environment installation directory.
+The _path_to_jre_ directory is the Java Runtime Environment installation directory.
 
 If the use of installscape encounter any accidents, try using the batch mode.
 
