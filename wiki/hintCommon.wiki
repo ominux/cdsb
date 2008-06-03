@@ -1,3 +1,5 @@
+Common Hint
+
 CDSB - Prepare for Installation of Cadence® products on FreeBSD.
 
 Copyright © 2008 Zhang Liang
