@@ -1,0 +1,73 @@
+#summary Common Hint
+
+CDSB - Prepare for Installation of Cadence® products on FreeBSD.
+
+Copyright © 2008 Zhang Liang
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <[http://www.gnu.org/licenses/]>.
+
+Email: meitolake@gmail.com
+
+= Installing Ports Tree =
+
+Install or update the Ports tree.
+
+For example, use the `portsnap` command.
+
+Install the Ports tree:
+
+ `portsnap fetch extract`
+
+Update the Ports tree:
+
+ `portsnap fetch update`
+
+= Running CDSB =
+
+See CDSB README for details.
+
+= Using RC Script =
+
+If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
+
+See the `/compat/linux/etc/rcCDS.d/README` file for details.
+
+= Installing Java Runtime Environment^TM^ =
+
+If the Java Runtime Environment^TM^ for Linux® does not run correctly on FreeBSD, install the other version of the Java Runtime Environment from Ports, then create a link to point to it.
+
+= Using Linux Shell =
+
+Create an account, this account use a Linux shell, such as `/compat/linux/bin/sh` or `/compat/linux/bin/csh`.
+
+For example, use the `adduser` command to create an account, the user name is `edauser`.
+
+= Running Linux ELF Binaries =
+
+If a Linux Binaries does not run, type:
+
+ `brandelf -t Linux` _`linux_elf_binary`_
+
+_linux_elf_binary_ is a Linux binary.
+
+Cadence is a registered trademark of Cadence Design Systems, Inc. in the United
+States and/or other jurisdictions.
+
+FreeBSD is a registered trademark of the FreeBSD Foundation.
+
+Linux® is the registered trademark of Linus Torvalds in the U.S. and other
+countries.
+
+Java and Java Runtime Environment are trademarks or registered trademarks of
+Sun Microsystems, Inc. in the United States and other countries.
