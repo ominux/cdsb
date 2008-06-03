@@ -19,50 +19,45 @@ Email: meitolake@gmail.com
 
 = Installing Ports Tree =
 
-    Install or update the Ports tree.
+Install or update the Ports tree.
 
-    For example, use the `portsnap` command:
+For example, use the `portsnap` command:
 
-        Install the Ports tree:
+Install the Ports tree:
 
-            `portsnap fetch extract`
+ `portsnap fetch extract`
 
-        Update the Ports tree:
+Update the Ports tree:
 
-            `portsnap fetch update`
+ `portsnap fetch update`
 
 = Running CDSB =
 
-    See CDSB README for details.
+See CDSB README for details.
 
 = Using RC Script =
 
-    If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d`
-    directory.
+If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
 
-    See the `/compat/linux/etc/rcCDS.d/README` file for details.
+See the `/compat/linux/etc/rcCDS.d/README` file for details.
 
 = Installing Java Runtime Environment^TM^ =
 
-    If the Java Runtime Environment^TM^ for Linux® does not run correctly on
-    FreeBSD, install the other version of the Java Runtime Environment from
-    Ports, then create a link to point to it.
+If the Java Runtime Environment^TM^ for Linux® does not run correctly on FreeBSD, install the other version of the Java Runtime Environment from Ports, then create a link to point to it.
 
 = Using Linux Shell =
 
-    Create an account, this account use a Linux shell, such as
-    `/compat/linux/bin/sh` or `/compat/linux/bin/csh`.
+Create an account, this account use a Linux shell, such as `/compat/linux/bin/sh` or `/compat/linux/bin/csh`.
 
-    For example, use the `adduser` command to create an account, the user name
-    is `edauser`.
+For example, use the `adduser` command to create an account, the user name is `edauser`.
 
 = Running Linux ELF Binaries =
 
-    If a Linux Binaries does not run, type:
+If a Linux Binaries does not run, type:
 
-	`brandelf -t Linux` _`linux_elf_binary`_
+ `brandelf -t Linux` _`linux_elf_binary`_
 
-    _linux_elf_binary_ is a Linux binary.
+_linux_elf_binary_ is a Linux binary.
 
 Cadence is a registered trademark of Cadence Design Systems, Inc. in the United
 States and/or other jurisdictions.
