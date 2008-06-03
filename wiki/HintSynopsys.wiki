@@ -1,0 +1,77 @@
+#summary Synopsys® Products Installation Hint
+
+CDSB - Prepare for Installation of Cadence® products on FreeBSD.
+
+Copyright © 2008 Zhang Liang
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <[http://www.gnu.org/licenses/]>.
+
+Email: meitolake@gmail.com
+
+= !CosmosScope^TM^ =
+
+To run !CosmosScope^TM^ installation program, see [HintCommon Running Linux® ELF Binaries.]
+
+= HSPICE® =
+
+To run HSPICE®, Intel® Pentium® 4 processor or above compatible processors are required.
+
+An environment variable `CDSB_UNAME_M` has been set as `i386`. If HSPICE not installed, this environment variable should be unset.
+
+`~/.profile`:
+
+ `unset CDSB_UNAME_M`
+
+`~/.cshrc`:
+
+ `unsetenv CDSB_UNAME_M`
+
+= !SpiceExplorer^TM^ =
+
+If the Java Runtime Environment^TM^ does not run correctly, see [HintCommon Installing Java Runtime Environment].
+
+For example, a Java Runtime Environment installed in `$SW_SX_COMMON/platform/i86_r7/java/jre` directory. If it does not run correctly, type:
+
+ `cd $SW_SX_COMMON/platform/i86_r7/java`
+
+ `mv jre jre_sorry`
+
+ `ln -s _path_to_jre_ jre`
+
+The `_path_to_jre_` directory is the Java Runtime Environment installation directory.
+
+= Synopsys® Installer =
+
+First, install the Synopsys® Installer. Then download and run this patch, see README for details.
+
+This patch needs prompt user to enter the Synopsys Installer installation directory, such as `/usr/synopsys/installer`.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+Cadence is a registered trademark of Cadence Design Systems, Inc. in the United
+States and/or other jurisdictions.
+
+FreeBSD is a registered trademark of the FreeBSD Foundation.
+
+Intel and Pentium are trademarks or registered trademarks of Intel Corporation
+in the U.S. and other countries.
+
+Linux® is the registered trademark of Linus Torvalds in the U.S. and other
+countries.
+
+Java and Java Runtime Environment are trademarks or registered trademarks of
+Sun Microsystems, Inc. in the United States and other countries.
+
+!CosmosScope, HSPICE, !SpiceExplorer and Synopsys are trademarks or registered
+trademarks of Synopsys, Inc.
