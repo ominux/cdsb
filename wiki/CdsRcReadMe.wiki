@@ -1,0 +1,37 @@
+{{{
+CDSB - Prepare for Installation of Cadence products on FreeBSD.
+Copyright (C) 2008 Zhang Liang
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Email: meitolake@gmail.com
+
+This file describes the general mechanism for installing and executing rc
+scripts of Cadence products on FreeBSD.
+
+The /compat/linux/etc/rcCDS.d directory contains rc scripts of Cadence
+products. File names in /compat/linux/etc/rcCDS.d are of the form S??* or the
+form K??* where 'S' means start this script, 'K' means kill this script, and
+'??' is the relative sequence number for starting or killing the script.
+
+At system boot, the /usr/local/etc/rc.d/cdsrc script executes those scripts in
+/compat/linux/etc/rcCDS.d that are prefixed with 'S'. At system shutdown, the
+/usr/local/etc/rc.d/cdsrc script executes those scripts in
+/compat/linux/etc/rcCDS.d that are prefixed with 'K'.
+
+When executing each script in /compat/linux/etc/rcCDS.d, the
+/usr/local/etc/rc.d/cdsrc script passes a single argument. It passes the
+argument 'start' for scripts prefixed with 'S' and the argument 'stop' for
+scripts prefixed with 'K'.
+}}}
