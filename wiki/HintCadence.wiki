@@ -43,10 +43,6 @@ The _`path_to_jre`_ directory is another Java Runtime Environment installation d
 
 If the use of installscape encounter any accidents, try using the batch mode.
 
-= Using RC Script =
-
-See [HintCommon Using RC Script].
-
 ----
 
 Netscape is a registered trademark of America Online, Inc. in the United States and/or other countries.
