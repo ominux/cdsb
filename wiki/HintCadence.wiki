@@ -27,7 +27,7 @@ For example, use the `adduser` command to create an account, the user name is `c
 
 = Installing Netscape® Web Browser =
 
-Install the Netscape® web browser 4.x for Linux or later. Such as 7.x.
+Install the [http://browser.netscape.com/releases Netscape® web browser] 4.x for Linux or later. Such as 7.x.
 
 = Using Cadence® !InstallScape^TM^ =
 
