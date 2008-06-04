@@ -35,6 +35,8 @@ Update the Ports tree:
 
 = Running CDSB =
 
+Download and run CDSB.
+
 See CDSB README for details.
 
 = Using RC Script =
