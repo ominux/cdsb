@@ -37,15 +37,17 @@ See Installing Java Runtime Environment^TM^.
 
  `mv LNX86 LNX86_sorry`
 
- `ln -s` _path_to_jre_ `LNX86`
+ `ln -s` _`path_to_jre`_ `LNX86`
 
-The _path_to_jre_ directory is the Java Runtime Environment installation directory.
+The _`path_to_jre`_ directory is the Java Runtime Environment installation directory.
 
 If the use of installscape encounter any accidents, try using the batch mode.
 
 = Using RC Script =
 
-See [HintCommon Common Hint].
+See [HintCommon Using RC Script].
+
+----
 
 Netscape is a registered trademark of America Online, Inc. in the United States and/or other countries.
 
