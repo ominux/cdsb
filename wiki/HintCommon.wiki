@@ -59,7 +59,9 @@ If a Linux Binaries does not run, type:
 
  `brandelf -t Linux` _`linux_elf_binary`_
 
-_linux_elf_binary_ is a Linux binary.
+_`linux_elf_binary`_ is a Linux binary.
+
+----
 
 Cadence is a registered trademark of Cadence Design Systems, Inc. in the United
 States and/or other jurisdictions.
