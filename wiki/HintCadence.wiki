@@ -39,7 +39,7 @@ See Installing Java Runtime Environment^TM^.
 
  `ln -s` _`path_to_jre`_ `LNX86`
 
-The _`path_to_jre`_ directory is the Java Runtime Environment installation directory.
+The _`path_to_jre`_ directory is another Java Runtime Environment installation directory.
 
 If the use of installscape encounter any accidents, try using the batch mode.
 
