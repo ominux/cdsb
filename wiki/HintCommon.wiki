@@ -43,7 +43,7 @@ See CDSB README for details.
 
 If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
 
-See the `/compat/linux/etc/rcCDS.d/README` file for details.
+See the [CdsRcReadMe `/compat/linux/etc/rcCDS.d/README`] file for details.
 
 = Installing Java Runtime Environment^TM^ =
 
