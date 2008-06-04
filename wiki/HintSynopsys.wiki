@@ -47,17 +47,17 @@ For example, a Java Runtime Environment installed in `$SW_SX_COMMON/platform/i86
 
  `mv jre jre_sorry`
 
- `ln -s _path_to_jre_ jre`
+ `ln -s` _`path_to_jre`_ `jre`
 
-The `_path_to_jre_` directory is the Java Runtime Environment installation directory.
+The _`path_to_jre`_ directory is another Java Runtime Environment installation directory.
 
 = Synopsys® Installer =
 
 First, install the Synopsys® Installer. Then download and run this patch, see README for details.
 
-This patch needs prompt user to enter the Synopsys Installer installation directory, such as `/usr/synopsys/installer`.
+When this patch prompts user to enter the Synopsys Installer installation directory, enter the Synopsys Installer installation directory, such as `/usr/synopsys/installer`.
 
---------------------------------------------------------------------------------------------------------------------------------
+----
 
 Cadence is a registered trademark of Cadence Design Systems, Inc. in the United
 States and/or other jurisdictions.
