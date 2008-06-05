@@ -21,7 +21,7 @@ Email: meitolake@gmail.com
 
 = !CosmosScope^TM^ =
 
-To run !CosmosScope^TM^ installation program, see [HintCommon Running Linux® ELF Binaries.]
+To run !CosmosScope^TM^ installation program, see Running Linux® ELF Binaries in [HintCommon Common Hint].
 
 = HSPICE® =
 
@@ -39,7 +39,7 @@ An environment variable `CDSB_UNAME_M` has been set as `i386`. If HSPICE not ins
 
 = !SpiceExplorer^TM^ =
 
-If the Java Runtime Environment^TM^ does not run correctly, see [HintCommon Installing Java Runtime Environment].
+If the Java Runtime Environment^TM^ does not run correctly, see Installing Java Runtime Environment in [HintCommon Common Hint].
 
 For example, a Java Runtime Environment installed in `$SW_SX_COMMON/platform/i86_r7/java/jre` directory. If it does not run correctly, type:
 
@@ -53,7 +53,7 @@ The _`path_to_jre`_ directory is another Java Runtime Environment installation d
 
 = Synopsys® Installer =
 
-First, install the Synopsys® Installer. Then download and run this patch, see `README` for details.
+First, install the Synopsys® Installer. Then download and run this patch, see SnpsInstPatchReadMe for details.
 
 When this patch prompts user to enter the Synopsys Installer installation directory, enter the Synopsys Installer installation directory, such as `/usr/synopsys/installer`.
 
