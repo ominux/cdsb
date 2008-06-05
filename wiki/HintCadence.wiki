@@ -31,7 +31,7 @@ Install the [http://browser.netscape.com/releases Netscape® web browser] 4.x fo
 
 = Using Cadence® !InstallScape^TM^ =
 
-See Installing Java Runtime Environment^TM^.
+See Installing Java Runtime Environment^TM^ in [HintCommon Common Hint].
 
 !InstallScape^TM^ contains the Java Runtime Environment in the `iscape/runtime` directory, named `LNX86`. To create a link, Type:
 
