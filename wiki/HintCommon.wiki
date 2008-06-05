@@ -37,13 +37,13 @@ Update the Ports tree:
 
 Download and run CDSB.
 
-See CDSB README for details.
+See CdsbReadMe for details.
 
 = Using RC Script =
 
 If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
 
-See the [CdsRcReadMe /compat/linux/etc/rcCDS.d/README] file for details.
+See the CdsRcReadMe file for details.
 
 = Installing Java Runtime Environment^TM^ =
 
