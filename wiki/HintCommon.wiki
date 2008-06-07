@@ -35,7 +35,7 @@ Update the Ports tree:
 
 = Running CDSB =
 
-Download and run CDSB.
+Download and run [http://cdsb.googlecode.com/files/cdsb_1.1.1.tar.gz CDSB].
 
 See CdsbReadMe for details.
 
