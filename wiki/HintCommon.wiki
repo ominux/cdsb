@@ -63,7 +63,7 @@ For example, use the `adduser` command to create an account, the user name is `e
 
 If the login shell is a Linux shell, the environment variable LIBXCB_ALLOW_SLOPPY_LOCK will be set as `1` when user login.
 
-If the login shell is not a Linux shell, the environment variable LIBXCB_ALLOW_SLOPPY_LOCK must be set by user.
+If the login shell is not a Linux shell, the environment variable LIBXCB_ALLOW_SLOPPY_LOCK must be set as `1` by user.
 
 `~/.profile`:
 
