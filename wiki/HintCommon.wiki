@@ -57,6 +57,21 @@ If the Java Runtime Environment^TM^ for Linux® does not run correctly on FreeBS
 
 Create an account, this account use a Linux shell, such as `/compat/linux/bin/sh` or `/compat/linux/bin/csh`.
 
+If use the C shell, `/compat/linux/bin/csh` and `/compat/linux/bin/tcsh`, in order to locate the root directory correctly, add following to `~/.cshrc` or `~/.tcshrc`:
+
+ {{{
+ set path=( $path \
+            /../sbin \
+            /../bin \
+            /../usr/sbin \
+            /../usr/bin \
+            /../usr/games \
+            /../usr/local/sbin \
+            /../usr/local/bin \
+            /../usr/X11R6/bin \
+          )
+ }}}
+
 For example, use the `adduser` command to create an account, the user name is `edauser`.
 
 = Setting Environment Variables =
