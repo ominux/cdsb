@@ -43,7 +43,11 @@ See CdsbReadMe for details.
 
 If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
 
-See the CdsRcReadMe for details.
+The `/compat/linux/etc/rcCDS.d` directory contains rc scripts of Cadence products. File names in `/compat/linux/etc/rcCDS.d` are of the form `S??*` or the form `K??*` where `S` means start this script, `K` means kill this script, and `??` is the relative sequence number for starting or killing the script.
+
+At system boot, the `/usr/local/etc/rc.d/cdsrc` script executes those scripts in `/compat/linux/etc/rcCDS.d` that are prefixed with `S`. At system shutdown, the `/usr/local/etc/rc.d/cdsrc` script executes those scripts in `/compat/linux/etc/rcCDS.d` that are prefixed with `K`.
+
+When executing each script in `/compat/linux/etc/rcCDS.d`, the `/usr/local/etc/rc.d/cdsrc` script passes a single argument. It passes the argument `start` for scripts prefixed with `S` and the argument `stop` for scripts prefixed with `K`.
 
 = Installing Java Runtime Environment^TM^ =
 
