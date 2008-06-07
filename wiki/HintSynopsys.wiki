@@ -53,9 +53,21 @@ The _`path_to_jre`_ directory is another Java Runtime Environment installation d
 
 = Synopsys® Installer =
 
-First, install the Synopsys® Installer. Then download and run this patch, see SnpsInstPatchReadMe for details.
+Before using the Synopsys® Installer, download and run this patch.
 
-When this patch prompts user to enter the Synopsys Installer installation directory, enter the Synopsys Installer installation directory, such as `/usr/synopsys/installer`.
+For example, the Synopsys Installer has been installed in `/compat/linux/opt/synopsys/installer` directory. Run this patch:
+
+ `# gzip -cd snps_inst_patch.tar.gz | tar xvf -`
+
+ `# ./snps_inst_patch/doPatch`
+
+When this patch prompts user to enter the Synopsys Installer installation directory, enter the Synopsys Installer installation directory:
+
+ `# Please enter Synopsys Installer installation directory: /compat/linux/opt/synopsys/installer`
+
+When finish, this patch prompts:
+
+ `# Finish!`
 
 ----
 
