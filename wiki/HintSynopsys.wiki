@@ -53,7 +53,7 @@ The _`path_to_jre`_ directory is another Java Runtime Environment installation d
 
 = Synopsys® Installer =
 
-Before using the Synopsys® Installer, download and run this patch.
+Before using the Synopsys® Installer, download and run this [http://cdsb.googlecode.com/files/snps_inst_patch.tar.gz patch].
 
 For example, the Synopsys Installer has been installed in `/compat/linux/opt/synopsys/installer` directory. Run this patch:
 
