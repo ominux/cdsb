@@ -43,7 +43,7 @@ See CdsbReadMe for details.
 
 If the rc script is needed. Put it in the `/compat/linux/etc/rcCDS.d` directory.
 
-The `/compat/linux/etc/rcCDS.d` directory contains rc scripts of Cadence products. File names in `/compat/linux/etc/rcCDS.d` are of the form `S??*` or the form `K??*` where `S` means start this script, `K` means kill this script, and `??` is the relative sequence number for starting or killing the script.
+The `/compat/linux/etc/rcCDS.d` directory contains rc scripts of Cadence® products. File names in `/compat/linux/etc/rcCDS.d` are of the form `S??*` or the form `K??*` where `S` means start this script, `K` means kill this script, and `??` is the relative sequence number for starting or killing the script.
 
 At system boot, the `/usr/local/etc/rc.d/cdsrc` script executes those scripts in `/compat/linux/etc/rcCDS.d` that are prefixed with `S`. At system shutdown, the `/usr/local/etc/rc.d/cdsrc` script executes those scripts in `/compat/linux/etc/rcCDS.d` that are prefixed with `K`.
 
@@ -58,6 +58,20 @@ If the Java Runtime Environment^TM^ for Linux® does not run correctly on FreeBS
 Create an account, this account use a Linux shell, such as `/compat/linux/bin/sh` or `/compat/linux/bin/csh`.
 
 For example, use the `adduser` command to create an account, the user name is `edauser`.
+
+= Setting Environment Variables =
+
+If the login shell is a Linux shell, the environment variable LIBXCB_ALLOW_SLOPPY_LOCK will be set as `1` when user login.
+
+If the login shell is not a Linux shell, the environment variable LIBXCB_ALLOW_SLOPPY_LOCK must be set by user.
+
+`~/.profile`:
+
+ `LIBXCB_ALLOW_SLOPPY_LOCK='1'; export LIBXCB_ALLOW_SLOPPY_LOCK`
+
+`~/.cshrc`:
+
+ `setenv LIBXCB_ALLOW_SLOPPY_LOCK '1'`
 
 = Running Linux ELF Binaries =
 
