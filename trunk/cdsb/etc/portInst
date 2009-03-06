@@ -1,0 +1,47 @@
+# CDSB - Prepare for Installation of Cadence products on FreeBSD.
+# Copyright (C) 2008 Zhang Liang
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Email: meitolake@gmail.com
+
+coreutils-*             sysutils/coreutils
+gettext-*               devel/gettext
+libiconv-*              converters/libiconv
+linux-atk-*             accessibility/linux-atk
+linux-cairo-*           graphics/linux-cairo
+linux-expat-*           textproc/linux-expat
+linux-fontconfig-*      x11-fonts/linux-fontconfig
+linux-gdk-pixbuf-*      graphics/linux-gdk-pixbuf
+linux-glib2-*           devel/linux-glib2
+linux-gtk-*             x11-toolkits/linux-gtk
+linux-gtk2-*            x11-toolkits/linux-gtk2
+linux-imlib-*           graphics/linux-imlib
+linux-jpeg-*            graphics/linux-jpeg
+linux-libaio-*          emulators/linux-libaio
+linux-libg2c-*          lang/linux-libg2c
+linux-libmng-*          graphics/linux-libmng
+linux-openmotif-*       x11-toolkits/linux-openmotif
+linux-openssl-*         security/linux-openssl
+linux-pango-*           x11-toolkits/linux-pango
+linux-png-*             graphics/linux-png
+linux-procps-*          sysutils/linux-procps
+linux-qt33-*            x11-toolkits/linux-qt33
+linux-tiff-*            graphics/linux-tiff
+linux-ungif-*           graphics/linux-ungif
+linux-xorg-libs-*       x11/linux-xorg-libs
+linux_base-fc-4*        emulators/linux_base-fc4
+linux_dri-*             graphics/linux_dri
+popt-*                  devel/popt
+rpm-*                   archivers/rpm

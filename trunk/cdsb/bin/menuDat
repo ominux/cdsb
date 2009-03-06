@@ -1,0 +1,110 @@
+PART_BEGIN_0
+CDSB - Prepare for Installation of Cadence products on FreeBSD.
+Copyright (C) 2008 Zhang Liang
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Email: meitolake@gmail.com
+
+RART_END_0
+
+PART_BEGIN_1
+------MAIN MENU------
+
+    1) Setup
+
+    2) Removal
+
+    3) Set RPM URL
+
+    h) Help
+
+    q) Quit
+
+PART_END_1
+
+PART_BEGIN_1.h
+Setup
+-----
+
+This option attempts to install packages, set environment.
+
+Removal
+-------
+
+This option attempts to uninstall packages, unset environment.
+
+Set RPM URL
+-----------
+
+This option sets URLs to retrieve RPMs.
+
+Help
+----
+
+This option displays this information.
+
+Quit
+----
+
+This option terminates this shell script.
+
+PART_END_1.h
+
+PART_BEGIN_1.3
+----RPM URL MENU----
+
+    1) Select URL
+
+    2) Add URL
+
+    d) Default
+
+    h) Help
+
+    m) Main Menu
+
+PART_END_1.3
+
+PART_BEGIN_1.3.h
+Select URL
+----------
+
+This option prompts user to select URLs from the default URLs of RPMs, the
+selected URLs will be used to retrieve RPMs. If RPMs can not be retrieved from
+the selected URLs, the default URLs will be used.
+
+Add URL
+-------
+
+This option prompts user to add URLs of RPMs, the added URLs will be used to
+retrieve RPMs. If RPMs can not be retrieved from the selected URLs, the default
+URLs will be used.
+
+Default
+-------
+
+This option restores to the default URLs of RPMs.
+
+Help
+----
+
+This option displays this information.
+
+Main Menu
+---------
+
+This option returns to MAIN MENU.
+
+PART_END_1.3.h
