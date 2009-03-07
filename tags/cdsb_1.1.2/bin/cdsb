@@ -1,0 +1,931 @@
+#!/bin/sh
+
+# CDSB - Prepare for Installation of Cadence products on FreeBSD.
+# Copyright (C) 2008 Zhang Liang
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Email: meitolake@gmail.com
+
+NeedPath="/bin:/sbin:/usr/bin:/usr/sbin:${PREFIX:-/usr/local}/bin"
+PATH="${NeedPath}:$PATH"; export PATH
+
+GetPath() (
+    cd "`dirname "$1"`" && pwd
+)
+
+GetCdsbTopDir() (
+    cd "`GetPath "$1"`/".. && pwd
+)
+
+CdsbTopDir="`GetCdsbTopDir "$0"`"
+
+CdsbBinDir="${CdsbTopDir}/bin"
+MenuDatFile="${CdsbBinDir}/menuDat"
+
+CdsbEtcDir="${CdsbTopDir}/etc"
+RpmInstFile="${CdsbEtcDir}/rpmInst"
+DirMkFile="${CdsbEtcDir}/dirMk"
+
+CdsbPkgDir="${CdsbTopDir}/pkg"
+
+CdsbTmpDir="${CdsbTopDir}/tmp"
+LogFile="${CdsbTmpDir}/cdsb.log"
+
+RootDir='/.'
+
+LinuxRootDir="${RootDir}/compat/linux"
+
+TrimList() {
+    sed -e 's/	/ /g' \
+	-e 's/  */ /g' \
+	-e 's/ #.*$//g' \
+	-e 's/^ //g' \
+	-e 's/ $//g' \
+	-e '/^#/d' \
+	-e '/^$/d'
+}
+
+ShowPart() {
+    sed -n -e "/^PART_BEGIN_${1}$/,/^PART_END_${1}$/!b" \
+	   -e "/^PART_/!p"
+}
+
+WcL() {
+    wc -l | TrimList
+}
+
+SortU() {
+    sort -ru "$1" -o "$1"
+}
+
+EchoN() {
+    echo -n "$*"
+}
+
+TeeLog() {
+    tee -a "$LogFile"
+}
+
+EchoTee() {
+    echo "$*" | TeeLog
+}
+
+HereLog() {
+    EchoTee "Output is saved as ${LogFile}."
+}
+
+ExitNz() {
+    EchoTee 'Fatal Error!'
+    HereLog
+    exit 1
+}
+
+LsA() {
+    ls -A "$@" 2>/dev/null
+}
+
+Cd() {
+    cd "$1" >/dev/null 2>&1
+}
+
+MkdirP() {
+    mkdir -p "$@" >/dev/null 2>&1
+}
+
+Rmdir() {
+    rmdir "$@" >/dev/null 2>&1
+}
+
+RmF() {
+    rm -f "$@" >/dev/null 2>&1
+}
+
+MountT() {
+    mount -t "$1" "$2" "$3" >/dev/null 2>&1
+}
+
+FetchR() {
+    fetch -Apr -o "$1" "$2"
+}
+    
+CpioT() {
+    cpio -it 2>/dev/null
+}
+
+CpioI() {
+    cpio -idm >/dev/null 2>&1
+}
+
+PkginfoI() {
+    pkg_info -I "$@" >/dev/null 2>&1
+}
+
+MakeI() {
+    make install clean
+}
+
+RpmInitdb() {
+    rpm --initdb --root "$LinuxRootDir" >/dev/null 2>&1
+}
+
+RpmToCpio() {
+    rpm2cpio "$1" 2>/dev/null
+}
+
+ListRpm() {
+    RpmToCpio "$1" | CpioT
+}
+
+InstRpm() {
+    RpmToCpio "$1" | CpioI
+}
+
+LinuxLdconfigR() {
+    "$LinuxRootDir"/sbin/ldconfig -r "$1" >/dev/null 2>&1
+}
+
+AnswerYn() (
+    while :; do
+        read MenuOpt
+        case "$MenuOpt" in
+            [yY]*)
+		return 0
+		;;
+            [nN]*)
+		return 1
+		;;
+            *)
+		EchoN 'Please press y (yes) or n (no) : '
+		;;
+        esac
+    done
+)
+
+AnswerQ() (
+    while :; do
+	read MenuOpt
+	case "$MenuOpt" in
+	    [qQ]*)
+		return 0
+		;;
+	    *)
+		EchoN 'Please press q to quit: '
+		;;
+	esac
+    done
+)
+
+FindEntry() (
+    EntryTmp="`cat`"
+    LineNum="`echo "$EntryTmp" | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	case "`echo "$EntryTmp" | sed -n "${LineNum}p" | TrimList`" in
+	    "`echo "$1" | TrimList`")
+		echo "$LineNum"
+		return 0
+		;;
+	    *)
+		LineNum="`expr "$LineNum" - 1`"
+		;;
+	esac
+    done
+    return 1
+)
+
+FindRcEntry() (
+    EntryTmp="`cat`"
+    LineNum="`echo "$EntryTmp" | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	case "`echo "$EntryTmp" | sed -n "${LineNum}p" | TrimList`" in
+	    "`echo "$1" | TrimList`")
+		echo "$LineNum"
+		return 0
+		;;
+	    "`echo "$2" | TrimList`")
+		break
+		;;
+	    *)
+		LineNum="`expr "$LineNum" - 1`"
+		;;
+	esac
+    done
+    return 1
+)
+
+AddEntry() {
+    if [ ! -e "$1" ]; then
+        echo "$2" >>"$1"
+    elif [ ! -f "$1" ]; then
+	return 1
+    elif FindEntry <"$1" "$2" >/dev/null 2>&1; then
+	return 0
+    else
+	echo "$2" >>"$1"
+    fi
+}
+
+AddRcEntry() {
+    if [ ! -e "$1" ]; then
+	echo "$2" >>"$1"
+    elif [ ! -f "$1" ]; then
+	return 1
+    elif FindRcEntry <"$1" "$2" "$3" >/dev/null 2>&1; then
+	return 0
+    else
+	echo "$2" >>"$1"
+    fi
+}
+
+RmEntry() (
+    if [ -f "$1" ]; then
+	while LineNum="`FindEntry <"$1" "$2"`"; do
+	    EntryTmp="`sed "${LineNum}d" <"$1"`"
+	    if [ "X$EntryTmp" = "X" ]; then
+		: >"$1"
+	    else
+		echo "$EntryTmp" >"$1"
+	    fi
+	done
+	return 0
+    else
+	return 0
+    fi
+)
+
+RmRcEntry() (
+    if [ -f "$1" ]; then
+	while LineNum="`FindRcEntry <"$1" "$2" "$3"`"; do
+	    EntryTmp="`sed "${LineNum}d" <"$1"`"
+	    if [ "X$EntryTmp" = "X" ]; then
+		: >"$1"
+	    else
+		echo "$EntryTmp" >"$1"
+	    fi
+	done
+	return 0
+    else
+	return 0
+    fi
+)
+
+MvEf() {
+    if [ -x "$2" ]; then
+	RmF "$1"
+    else
+	mv "$1" "$2" >/dev/null 2>&1
+    fi
+}
+
+MountFs() {
+    if mount | awk '{ print $1 }' | FindEntry "$1" >/dev/null 2>&1; then
+	return 0
+    else
+	MountT "$1" "$2" "$3"
+    fi
+}
+
+SaySf() {
+    case "$1" in
+	0)
+	    EchoTee 'Success! '
+	    ;;
+	*)
+	    EchoTee 'Failure! '
+	    ;;
+    esac
+    return "$1"
+}
+
+SaySfSh() {
+    EchoTee "Executing ${1}... "
+    sh "$1"
+    SaySf "$?"
+}
+
+SaySfCd() {
+    EchoTee "Entering ${1}... "
+    Cd "$1"
+    SaySf "$?"
+}
+
+SaySfMkdirP() {
+    EchoTee "Creating ${@}... "
+    MkdirP "$@"
+    SaySf "$?"
+}
+
+SaySfRmdir() {
+    EchoTee "Removing ${@}... "
+    Rmdir "$@"
+    SaySf "$?"
+}
+
+SaySfRmF() {
+    EchoTee "Removing ${@}... "
+    RmF "$@"
+    SaySf "$?"
+}
+
+SaySfMvEf() {
+    EchoTee "Moving $1 to ${2}... "
+    MvEf "$1" "$2"
+    SaySf "$?"
+}
+
+SaySfMountFs() {
+    EchoTee "Mounting $2 on ${3}... "
+    MountFs "$1" "$2" "$3"
+    SaySf "$?"
+}
+
+SaySfFetchR() {
+    EchoTee "Fetching $2 in ${1}... "
+    FetchR "$1" "$2"
+    SaySf "$?"
+}
+
+SaySfCpioI() {
+    EchoTee "Extracting ${1}... "
+    CpioI <"$1"
+    SaySf "$?"
+}
+
+SaySfAddEntry() {
+    EchoTee "Adding $2 to ${1}... "
+    AddEntry "$1" "$2"
+    SaySf "$?"
+}
+
+SaySfRmEntry() {
+    EchoTee "Removing $2 from ${1}... "
+    RmEntry "$1" "$2"
+    SaySf "$?"
+}
+
+SaySfAddRcEntry() {
+    EchoTee "Adding $2 to ${1}... "
+    AddRcEntry "$1" "$2" "$3"
+    SaySf "$?"
+}
+
+SaySfRmRcEntry() {
+    EchoTee "Removing $2 from ${1}... "
+    RmRcEntry "$1" "$2" "$3"
+    SaySf "$?"
+}
+
+SaySfMakeI() {
+    EchoTee "Installing Ports... "
+    MakeI
+    SaySf "$?"
+}
+
+SaySfRpmInitdb() {
+    EchoTee 'Creating RPM database... '
+    RpmInitdb
+    SaySf "$?"
+}
+
+SaySfInstRpm() {
+    EchoTee "Installing ${1}... "
+    InstRpm "$1"
+    SaySf "$?"
+}
+
+SaySfLinuxLdconfigR() {
+    EchoTee "Configuring the shared library cache in ${1}... "
+    LinuxLdconfigR "$1"
+    SaySf "$?"
+}
+
+OnlySaySfRmdir() (
+    test -d "$1" && SaySfRmdir "$1"
+)
+
+OnlySaySfRmF() (
+    test ! -d "$1" && SaySfRmF "$1"
+)
+
+InstPort() (
+    PortDir="${PORTSDIR:-/usr/ports}"
+    if PkginfoI "$1"; then
+	return 0
+    else
+	SaySfCd "${PortDir}/$2" && SaySfMakeI
+    fi
+)
+
+BatchSaySfMkdirP() (
+    for Var in `TrimList`; do
+	SaySfMkdirP "$Var"
+    done
+)
+
+BatchOnlySaySfRmdir() (
+    for Var in `TrimList`; do
+	OnlySaySfRmdir "$Var"
+    done
+)
+
+BatchOnlySaySfRmF() (
+    for Var in `TrimList`; do
+	OnlySaySfRmF "$Var"
+    done
+)
+
+BatchCpioT() (
+    for Var in `TrimList`; do
+        CpioT <"$Var"
+    done
+)
+
+BatchSaySfCpioI() (
+    for Var in `TrimList`; do
+	SaySfCpioI "$Var" || return 1
+    done
+)
+
+BatchListRpm() (
+    for Var in `TrimList`; do
+        ListRpm "$Var"
+    done
+)
+
+BatchSaySfInstRpm() (
+    for Var in `TrimList`; do
+	SaySfInstRpm "$Var" || return 1
+    done
+)
+
+CheckFetch() {
+    until [ -e "$1" ] && [ "X`md5 <"$1"`" = "X$3" ]; do
+	SaySfFetchR "$1" "$2" || return 1
+    done
+    return 0
+}
+
+RetryRpmUrl() (
+    for Var in `TrimList`; do
+	CheckFetch "${CdsbPkgDir}/$1" "$Var/$1" "$2" && return 0
+    done
+)
+
+FetchRpm() {
+    test -f "${CdsbTmpDir}/.$2" && \
+    RetryRpmUrl "$1" <"${CdsbTmpDir}/.$2" "$3" || \
+    RetryRpmUrl "$1" <"${CdsbEtcDir}/$2" "$3"
+}
+
+BatchFetchRpm() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	FetchRpm "`echo "$ListTrim" | \
+		   sed -n "${LineNum}p" | \
+		   awk '{ print $1 }' | \
+		   TrimList`" \
+		 "`echo "$ListTrim" | \
+		   sed -n "${LineNum}p" | \
+		   awk '{ print $2 }' | \
+		   TrimList`" \
+		 "`echo "$ListTrim" | \
+		   sed -n "${LineNum}p" | \
+		   awk '{ $1=""; $2=""; print; }' | \
+		   TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+UninstCpio() (
+    SaySfCd "$RootDir" && BatchOnlySaySfRmF <"$1"
+    SaySfCd "$RootDir" && BatchOnlySaySfRmdir <"$1"
+)
+
+UninstRpm() (
+    SaySfCd "$LinuxRootDir" && BatchOnlySaySfRmF <"$1"
+    SaySfCd "$LinuxRootDir" && BatchOnlySaySfRmdir <"$1"
+)
+
+BatchSaySfAddEntry() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SaySfAddEntry "`echo "$ListTrim" | \
+			sed -n "${LineNum}p" | \
+			awk '{ print $1 }' | \
+			TrimList`" \
+		      "`echo "$ListTrim" | \
+			sed -n "${LineNum}p" | \
+			awk '{ $1=""; print; }' | \
+			TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchSaySfRmEntry() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SaySfRmEntry "`echo "$ListTrim" | \
+		       sed -n "${LineNum}p" | \
+		       awk '{ print $1 }' | \
+		       TrimList`" \
+		     "`echo "$ListTrim" | \
+		       sed -n "${LineNum}p" | \
+		       awk '{ $1=""; print; }' | \
+		       TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchSaySfAddRcEntry() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SaySfAddRcEntry "`echo "$ListTrim" | \
+			  sed -n "${LineNum}p" | \
+			  awk '{ print $1 }' | \
+			  TrimList`" \
+			"`echo "$ListTrim" | \
+			  sed -n "${LineNum}p" | \
+			  awk '{ print $2 }' | \
+			  TrimList`" \
+			"`echo "$ListTrim" | \
+			  sed -n "${LineNum}p" | \
+			  awk '{ $1=""; $2=""; print; }' | \
+			  TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchSaySfRmRcEntry() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SaySfRmRcEntry "`echo "$ListTrim" | \
+			 sed -n "${LineNum}p" | \
+			 awk '{ print $1 }' | \
+			 TrimList`" \
+		       "`echo "$ListTrim" | \
+			 sed -n "${LineNum}p" | \
+			 awk '{ print $2 }' | \
+			 TrimList`" \
+		       "`echo "$ListTrim" | \
+			 sed -n "${LineNum}p" | \
+			 awk '{ $1=""; $2=""; print; }' | \
+			 TrimList`" || return 1
+	LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchInstPort() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	InstPort "`echo "$ListTrim" | \
+		   sed -n "${LineNum}p" | \
+		   awk '{ print $1 }' | \
+		   TrimList`" \
+		 "`echo "$ListTrim" | \
+		   sed -n "${LineNum}p" | \
+		   awk '{ $1=""; print; }' | \
+		   TrimList`" || return 1
+	LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchSaySfMvEf() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+        SaySfMvEf "`echo "$ListTrim" | \
+		    sed -n "${LineNum}p" | \
+		    awk '{ print $1 }' | \
+		    TrimList`" \
+		  "`echo "$ListTrim" | \
+		    sed -n "${LineNum}p" | \
+		    awk '{ $1=""; print; }' | \
+		    TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchSaySfMountFs() (
+    ListTrim="`TrimList`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SaySfMountFs "`echo "$ListTrim" | \
+			      sed -n "${LineNum}p" | \
+			      awk '{ print $1 }' | \
+			      TrimList`" \
+			    "`echo "$ListTrim" | \
+			      sed -n "${LineNum}p" | \
+			      awk '{ print $2 }' | \
+			      TrimList`" \
+			    "`echo "$ListTrim" | \
+			      sed -n "${LineNum}p" | \
+			      awk '{ $1=""; $2=""; print; }' | \
+			      TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+InstNeedCpio() {
+    SaySfCd "$RootDir" && \
+    LsA "${CdsbPkgDir}/"*'.cpio' | BatchSaySfCpioI
+}
+
+UninstNeedCpio() {
+    CpioContentRmFile="${CdsbEtcDir}/cpioContentRm"
+    CpioContentRmFileTmp="${CdsbTmpDir}/cpioContentRm$$"
+    LsA "${CdsbPkgDir}/"*'.cpio' | BatchCpioT >>"$CpioContentRmFileTmp"
+    TrimList <"$CpioContentRmFile" >>"$CpioContentRmFileTmp"
+    SortU "$CpioContentRmFileTmp"
+    UninstCpio "$CpioContentRmFileTmp"
+}
+
+InstNeedRpm() {
+    SaySfCd "$LinuxRootDir" && \
+    LsA "${CdsbPkgDir}/"*'.rpm' | BatchSaySfInstRpm && \
+    SaySfLinuxLdconfigR "$LinuxRootDir"
+}
+
+UninstNeedRpm() {
+    RpmContentRmFile="${CdsbEtcDir}/rpmContentRm"
+    RpmContentRmFileTmp="${CdsbTmpDir}/rpmContentRm$$"
+    LsA "${CdsbPkgDir}/"*'.rpm' | BatchListRpm >>"$RpmContentRmFileTmp"
+    TrimList <"$RpmContentRmFile" >>"$RpmContentRmFileTmp"
+    SortU "$RpmContentRmFileTmp"
+    UninstRpm "$RpmContentRmFileTmp"
+}
+
+FetchNeedRpm() {
+    BatchFetchRpm <"$RpmInstFile"
+}
+
+MkNeedDir() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfMkdirP <"$DirMkFile"
+}
+
+RmNeedDir() {
+    SaySfCd "$RootDir" && \
+    BatchOnlySaySfRmdir <"$DirMkFile"
+}
+
+MvNeedEf() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfMvEf <"${CdsbEtcDir}/efMv"
+}
+
+VmNeedEf() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfMvEf <"${CdsbEtcDir}/efVm"
+}
+
+AddNeedEntry() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfAddEntry <"${CdsbEtcDir}/entryAdd"
+}
+
+RmNeedEntry() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfRmEntry <"${CdsbEtcDir}/entryRm"
+}
+
+AddNeedRcEntry() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfAddRcEntry <"${CdsbEtcDir}/rcEntryAdd"
+}
+
+RmNeedRcEntry() {
+    SaySfCd "$RootDir" && \
+    BatchSaySfRmRcEntry <"${CdsbEtcDir}/rcEntryRm"
+}
+
+InstNeedPort() {
+    BatchInstPort <"${CdsbEtcDir}/portInst"
+}
+
+MountNeedFs() {
+    BatchSaySfMountFs <"${CdsbEtcDir}/fsMount"
+}
+
+InitInstRc() {
+    SaySfCd "$RootDir" && \
+    SaySfSh "${CdsbEtcDir}/rcInitInst"
+}
+
+SelectRpmUrl() (
+    ListTrim="`TrimList <"${CdsbEtcDir}/$2"`"
+    LineSum="`echo "$ListTrim" | TrimList | WcL`"
+    if [ "$LineSum" -gt 0 ]; then
+	LineNum='1'
+	clear
+	echo "The available URLs of ${1} are: " >"${CdsbTmpDir}/${2}$$"
+	echo '' >>"${CdsbTmpDir}/${2}$$"
+	for Var in `echo "$ListTrim"`; do
+	    echo "    ${LineNum}) ${Var}/$1" >>"${CdsbTmpDir}/${2}$$"
+	    echo '' >>"${CdsbTmpDir}/${2}$$"
+	    LineNum="`expr "$LineNum" + 1`"
+	done
+	more "${CdsbTmpDir}/${2}$$"
+	while :; do
+	    LineNum="$LineSum"
+	    EchoN "Please select [ 1 - $LineSum ]: "
+	    read MenuOpt
+	    while [ "X$MenuOpt" != "X$LineNum" ] && \
+		  [ "$LineNum" -gt 0 ]; do
+		LineNum="`expr "$LineNum" - 1`"
+	    done
+	    if [ "$LineNum" -gt 0 ]; then
+		echo "$ListTrim" | \
+		sed -n "${MenuOpt}p" >>"${CdsbTmpDir}/.$2"
+		echo "An URL was selected: $MenuOpt "
+		EchoN 'Select another URL? '
+		AnswerYn || return 0
+	    else
+		echo "Sorry, [ 1 - $LineSum ] is available. "
+	    fi
+	done
+    else
+        echo 'No URLs are available. '
+        sleep 2
+        return 1
+    fi
+)
+
+AddRpmUrl() (
+    clear
+    while :; do
+	EchoN "Please add an URL of ${1}: "
+	read MenuOpt
+	if [ "X`echo "$MenuOpt" | TrimList`" = 'X' ]; then
+	    echo 'No URL was added. '
+	else
+	    echo "`dirname "$MenuOpt"`" >>"${CdsbTmpDir}/.$2"
+	    echo "An URL was added: $MenuOpt "
+	    EchoN 'Add another URL? '
+	    AnswerYn || return 0
+	fi
+    done
+)
+
+RmRpmUrlFileTmp() {
+    RmF "${CdsbTmpDir}/.$1"
+}
+
+BatchSelectRpmUrl() (
+    ListTrim="`TrimList <"$1"`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	SelectRpmUrl "`echo "$ListTrim" | \
+		       sed -n "${LineNum}p" | \
+		       awk '{ print $1 }' | \
+		       TrimList`" \
+		     "`echo "$ListTrim" | \
+		       sed -n "${LineNum}p" | \
+		       awk '{ print $2 }' | \
+		       TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchAddRpmUrl() (
+    ListTrim="`TrimList <"$1"`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	AddRpmUrl "`echo "$ListTrim" | \
+		    sed -n "${LineNum}p" | \
+		    awk '{ print $1 }' | \
+		    TrimList`" \
+		  "`echo "$ListTrim" | \
+		    sed -n "${LineNum}p" | \
+		    awk '{ print $2 }' | \
+		    TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+BatchRmRpmUrlFileTmp() (
+    ListTrim="`TrimList <"$1"`"
+    LineNum="`echo "$ListTrim" | TrimList | WcL`"
+    while [ "$LineNum" -gt 0 ]; do
+	RmRpmUrlFileTmp "`echo "$ListTrim" | \
+			  sed -n "${LineNum}p" | \
+			  awk '{ print $2 }' | \
+			  TrimList`" || return 1
+        LineNum="`expr "$LineNum" - 1`"
+    done
+    return 0
+)
+
+SetRpmUrl() (
+    while :; do
+	clear
+	ShowPart <"$MenuDatFile" '1.3' | more
+	EchoN 'Please select: [ m ] '
+	read MenuOpt
+	case "${MenuOpt:=m}" in
+	    1)
+                BatchRmRpmUrlFileTmp "$RpmInstFile"
+		BatchSelectRpmUrl "$RpmInstFile"
+		;;
+	    2)
+                BatchRmRpmUrlFileTmp "$RpmInstFile"
+		BatchAddRpmUrl "$RpmInstFile"
+		;;
+	    d | D)
+		BatchRmRpmUrlFileTmp "$RpmInstFile"
+		;;
+	    h | H)
+		clear
+		ShowPart <"$MenuDatFile" '1.3.h' | more
+		AnswerQ
+		;;
+	    m | M)
+		return 0
+		;;
+	    *)
+		echo 'Sorry'
+		sleep 1
+		;;
+	esac
+    done
+)
+
+MainMenu() (
+    RmF "${CdsbTmpDir}/"*
+    while :; do
+	clear
+	ShowPart <"$MenuDatFile" 1 | more
+	EchoN 'Please select: [ 1 ] '
+	read MenuOpt
+	case "${MenuOpt:=1}" in
+	    1)
+		FetchNeedRpm || ExitNz
+		InstNeedPort || ExitNz
+		InstNeedRpm || ExitNz
+		MkNeedDir || ExitNz
+		MvNeedEf || ExitNz
+		InstNeedCpio || ExitNz
+		AddNeedEntry || ExitNz
+		AddNeedRcEntry || ExitNz
+		InitInstRc || ExitNz
+		MountNeedFs || ExitNz
+		SaySfRpmInitdb || ExitNz
+		sleep 1
+		;;
+	    2)
+		RmNeedRcEntry
+		RmNeedEntry
+		UninstNeedCpio
+		VmNeedEf
+		RmNeedDir
+		UninstNeedRpm
+		sleep 1
+		;;
+	    3)
+		SetRpmUrl
+		sleep 1
+		;;
+	    h | H)
+		clear
+		ShowPart <"$MenuDatFile" '1.h' | more
+		AnswerQ
+		;;
+	    q | Q)
+		exit 0
+		;;
+	    *)
+		echo 'Sorry'
+		sleep 1
+		;;
+	esac
+
+    done
+)
+
+MainMenu
