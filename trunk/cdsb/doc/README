@@ -19,7 +19,7 @@ Email: meitolake@gmail.com
 Introduction
 ------------
 
-This is CDSB version 1.1.1. If a previous version has been installed, remove it
+This is CDSB version 1.1.2. If a previous version has been installed, remove it
 then use this version.
 
 FreeBSD provides the binary compatibility with Linux, therefor some Cadence
@@ -50,11 +50,11 @@ Usage
 
 2. Unpack the archives. Type:
 
-    gzip -cd cdsb_1.1.1.tar.gz | tar xvf -
+    gzip -cd cdsb_1.1.2.tar.gz | tar xvf -
 
 3. Run CDSB. Type:
 
-    ./cdsb_1.1.1/bin/cdsb
+    ./cdsb_1.1.2/bin/cdsb
 
 Recommendation
 --------------
