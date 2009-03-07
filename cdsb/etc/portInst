@@ -24,7 +24,6 @@ linux-cairo-*           graphics/linux-cairo
 linux-expat-*           textproc/linux-expat
 linux-fontconfig-*      x11-fonts/linux-fontconfig
 linux-gdk-pixbuf-*      graphics/linux-gdk-pixbuf
-linux-glib2-*           devel/linux-glib2
 linux-gtk-*             x11-toolkits/linux-gtk
 linux-gtk2-*            x11-toolkits/linux-gtk2
 linux-imlib-*           graphics/linux-imlib
