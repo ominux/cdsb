@@ -1,5 +1,5 @@
 #summary Common Hint
-#labels Phase-Support
+#labels Phase-Deploy
 
 CDSB - Prepare for Installation of Cadence® products on FreeBSD.
 
