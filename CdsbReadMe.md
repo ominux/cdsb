@@ -1,0 +1,136 @@
+
+```
+CDSB - Prepare for Installation of Cadence products on FreeBSD.
+Copyright (C) 2008 Zhang Liang
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Email: meitolake@gmail.com
+
+Introduction
+------------
+
+This is CDSB version 1.1.2. If a previous version has been installed, remove it
+then use this version.
+
+FreeBSD provides the binary compatibility with Linux, therefor some Cadence
+products for Linux can be installed on FreeBSD.
+
+CDSB makes the necessary preparations for the installation of Cadence products
+on FreeBSD.
+
+Requirements
+------------
+
+1. Operating System
+
+    FreeBSD i386
+
+2. Network Connection
+
+    Need Network Connection to install Ports and RPMs.
+
+3. The Ports Collection
+
+    The Ports tree must be installed or updated.
+
+Usage
+-----
+
+1. Login as root.
+
+2. Unpack the archives. Type:
+
+    gzip -cd cdsb_1.1.2.tar.gz | tar xvf -
+
+3. Run CDSB. Type:
+
+    ./cdsb_1.1.2/bin/cdsb
+
+Recommendation
+--------------
+
+1. Installing Java Runtime Environment
+
+    Cadence products usually contains the Java Runtime Environment. If it does
+    not run correctly on FreeBSD, install the other version of the Java
+    Runtime Environment, then create a link to point to it.
+
+    For example, the Cadence installation program InstallScape contains the
+    Java Runtime Environment in the iscape/runtime directory, named LNX86. To
+    create a link, Type:
+
+	mv LNX86 LNX86_sorry
+	ln -s path_to_jre LNX86
+
+    The path_to_jre directory is another Java Runtime Environment installation
+    directory.
+
+    In addition, if the use of installscape encounter any accidents, try using
+    the batch mode.
+
+2. Using Linux Shell
+
+    To use Cadence products, Linux Shells are essential, for example,
+    /compat/linux/bin/sh. Create an account that uses the Linux shell is
+    recommended.
+
+    To use the C shell, /compat/linux/bin/csh and /compat/linux/bin/tcsh, in
+    order to locate the root directory correctly, add following to ~/.cshrc or
+    ~/.tcshrc:
+
+	set path=( $path \
+		   /../sbin \
+		   /../bin \
+		   /../usr/sbin \
+		   /../usr/bin \
+		   /../usr/games \
+		   /../usr/local/sbin \
+		   /../usr/local/bin \
+		   /../usr/X11R6/bin \
+		 )
+
+3. Using RC Script
+
+    Cadence products provides several rc scripts to start daemons, for example,
+    the license daemons. CDSB creates the /compat/linux/etc/rcCDS.d directory,
+    put rc scripts in this directory. See the /compat/linux/etc/rcCDS.d/README
+    file for details.
+
+4. Environment Variable
+
+    An environment variable CDSB_UNAME_M has been set as 'i386'. If HSPICE not
+    installed, this environment variable should be unset.
+
+	~/.profile:
+
+	    unset CDSB_UNAME_M
+
+	~/.cshrc:
+
+	    unsetenv CDSB_UNAME_M
+
+    The environment variable LIBXCB_ALLOW_SLOPPY_LOCK has been set as '1'.
+
+5. Visiting CDSB Wiki
+
+    Get more information from CDSB Wiki:
+
+	http://code.google.com/p/cdsb/w/list
+
+Community
+---------
+
+cdsbgroup@googlegroups.com
+```
